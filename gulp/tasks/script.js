@@ -2,7 +2,6 @@ var webpack = require('webpack');
 var webpackConfig = require('../webpack.config.js');
 
 module.exports = function (gulp, plugins, config) {
-
     // 使用gulp运行开发期间的webpack
     gulp.task('webpack:dev', function(callback) {
         var myDevConfig = Object.create(webpackConfig);
@@ -19,7 +18,7 @@ module.exports = function (gulp, plugins, config) {
     });
 
     // webpack执行命令
-    gulp.task('webpack:shell', plugins.shell.task([
+    gulp.task('webpack', plugins.shell.task([
         'webpack --watch --process --colors --config gulp/webpack.config.js'
     ]));
 

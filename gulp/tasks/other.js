@@ -14,27 +14,35 @@ module.exports = function (gulp, plugins, config, browserSync) {
     });
 
     // 开发监控，浏览器不自动刷新
-    gulp.task('watch', function() {
+    gulp.task('watch:withoutJS', function() {
         gulp.watch(config.src + 'sass/**/*.scss', ['sass']);
-        // gulp.watch(config.src + 'js/**/*.js', ['jshint', 'copy:js']);
         gulp.watch(config.src + 'images/**/*.{png,gif,jpg,jpeg}', ['copy:img']);
         gulp.watch(config.src + 'html/**/*.html', ['include']);
     });
 
+    // 开发监控，浏览器不自动刷新
+    gulp.task('watch:withJS', ['watch:withoutJS'], function() {
+        gulp.watch(config.src + 'js/**/*.js', ['webpack:dev']);
+    });
+
     // 开发监控，浏览器自动刷新
-    gulp.task('reload', function() {
+    gulp.task('reload:withoutJS', ['watch:withoutJS'], function() {
         browserSync.init({
             server: {
                 baseDir: './'
             }
         });
 
-        gulp.watch(config.src + 'html/**/*.html', ['include']);
-        gulp.watch(config.src + 'sass/**/*.scss', ['sass']);
-        gulp.watch(config.src + 'js/**/*.js', ['jshint', 'copy:js']);
-        gulp.watch(config.src + 'images/**/*.{png,gif,jpg,jpeg}', ['copy:img']);
         gulp.watch(config.dist + 'js/**/*.js').on('change', browserSync.reload);
         gulp.watch(config.dist + 'html/**/*.html').on('change', browserSync.reload);
+    });
+
+    // 开发监控，浏览器自动刷新
+    gulp.task('reload:withJS', ['reload:withoutJS', 'watch:withJS'], function(cb) {
+        runSequence(
+            'webpack:dev',
+            cb
+        );
     });
 
     // 打包图片
