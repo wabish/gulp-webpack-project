@@ -22,6 +22,10 @@ module.exports = function (gulp, plugins, config) {
         'webpack --watch --process --colors --config gulp/webpack.config.js'
     ]));
 
+    gulp.task('webpack:build', plugins.shell.task([
+        'webpack --process --colors --config gulp/webpack.production.config.js'
+    ]));
+
     // 添加js文件版本号
     gulp.task('rev:js', function() {
         return gulp.src(config.tmp + 'js/**/*.js')
@@ -31,18 +35,18 @@ module.exports = function (gulp, plugins, config) {
             .pipe(gulp.dest(config.tmp + 'rev/js'));
     });
 
-    // 复制js文件到dist目录
-    gulp.task('copy:js', function() {
-        return gulp.src(config.src + 'js/**/*.js')
+    // 复制第三方js文件到dist目录
+     gulp.task('copy:libJS', function() {
+        return gulp.src(config.src + 'js/lib/**/*.js')
             .pipe(plugins.newer(config.dist + 'js'))
             .pipe(plugins.contribCopy())
             .pipe(gulp.dest(config.dist + 'js'));
     });
 
-    // 复制第三方js文件到dist目录
-     gulp.task('copy:libJs', function() {
+    // 压缩第三方js文件到tmp目录
+    gulp.task('uglify:libJS', function() {
         return gulp.src(config.src + 'js/lib/**/*.js')
-            .pipe(plugins.contribCopy())
-            .pipe(gulp.dest(config.dist + 'js/lib'));
+            .pipe(plugins.uglify({preserveComments: 'some'}))
+            .pipe(gulp.dest(config.tmp + 'js'));
     });
 };

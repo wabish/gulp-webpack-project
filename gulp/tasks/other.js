@@ -22,7 +22,7 @@ module.exports = function (gulp, plugins, config, browserSync) {
 
     // 开发监控，浏览器不自动刷新
     gulp.task('watch:withJS', ['watch:withoutJS'], function() {
-        gulp.watch(config.src + 'js/**/*.js', ['webpack:dev']);
+        gulp.watch(config.src + 'js/**/*.js', ['webpack:dev', 'copy:libJS']);
     });
 
     // 开发监控，浏览器自动刷新
@@ -70,10 +70,9 @@ module.exports = function (gulp, plugins, config, browserSync) {
     // 打包js文件
     gulp.task('build:js', function(cb) {
         runSequence(
-            'requirejs',
-            'uglify:config',
+            'webpack:build',
+            'uglify:libJS',
             'rev:js',
-            'copy:libJs',
             cb
         );
     });

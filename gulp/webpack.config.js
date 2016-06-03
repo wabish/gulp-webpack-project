@@ -20,10 +20,17 @@ function getEntry() {
     return files;
 }
 
+function addVendor() {
+    var files = getEntry();
+    files['vendor'] = ['jquery'];
+    // console.log(files);
+    return files;
+}
+
 module.exports = {
     cache: true,
     devtool: "source-map",
-    entry: getEntry(),
+    entry: addVendor(),
     output: {
         path: path.join(DIST_PATH, 'js'),
         publicPath: "dist/js/",
@@ -32,16 +39,30 @@ module.exports = {
     module: {
         preLoaders: [{
             test: /\.js?$/,
-            include: SRC_PATH,
-            exclude: /node_modules/,
+            include: path.join(SRC_PATH, 'js'),
+            exclude: [/node_modules/, path.join(SRC_PATH, 'js/lib')],
             loader: 'jshint-loader'
         }]
     },
-
+    resolve: {
+        alias: {
+            jquery: SRC_PATH + '/js/lib/jquery-1.11.1.min.js'
+        }
+    },
     // any jshint option http://www.jshint.com/docs/options/
     jshint: {
         camelcase: true,
         eqeqeq: true,
-        undef: true
-    }
+        undef: true,
+        browser: true,
+        devel: true
+    },
+    externals: {
+        threePlugin: 'window.plugin',
+        artTemplate: 'window.template'
+    },
+    plugins: [
+        new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
+        // new webpack.IgnorePlugin(/\.js?$/, [path.join(SRC_PATH, 'js/lib')])
+    ]
 };

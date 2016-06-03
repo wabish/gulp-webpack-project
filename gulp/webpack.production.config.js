@@ -5,6 +5,7 @@ var webpack = require('webpack');
 var ROOT_PATH = path.resolve(process.cwd());
 var SRC_PATH = path.resolve(ROOT_PATH, 'src');
 var DIST_PATH = path.resolve(ROOT_PATH, 'dist');
+var TMP_PATH = path.resolve(ROOT_PATH, 'tmp');
 
 // 获取多页面的每个入口文件，用于配置中的entry
 function getEntry() {
@@ -20,28 +21,34 @@ function getEntry() {
     return files;
 }
 
+function addVendor() {
+    var files = getEntry();
+    files['vendor'] = ['jquery'];
+    return files;
+}
+
 module.exports = {
-    cache: true,
-    devtool: "source-map",
-    entry: getEntry(),
+    entry: addVendor(),
     output: {
-        path: path.join(DIST_PATH, 'js'),
-        publicPath: "dist/js/",
+        path: path.join(TMP_PATH, 'js'),
         filename: "[name].js"
     },
-    module: {
-        preLoaders: [{
-            test: /\.js?$/,
-            include: SRC_PATH,
-            exclude: /node_modules/,
-            loader: 'jshint-loader'
-        }]
+    resolve: {
+        alias: {
+            jquery: SRC_PATH + '/js/lib/jquery-1.11.1.min.js'
+        }
     },
-
-    // any jshint option http://www.jshint.com/docs/options/
-    jshint: {
-        camelcase: true,
-        eqeqeq: true,
-        undef: true
-    }
+    externals: {
+        threePlugin: 'window.plugin',
+        artTemplate: 'window.template'
+    },
+    plugins: [
+        new webpack.optimize.UglifyJsPlugin({
+            minimize: true,
+            compress: {
+                warnings: false
+            }
+        }),
+        new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js')
+    ]
 };

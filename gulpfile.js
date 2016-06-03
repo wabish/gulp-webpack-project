@@ -48,7 +48,7 @@ gulp.task('help',function () {
 gulp.task('dev', function(cb) {
     runSequence(
         ['clean:dist', 'clean:tmp'],
-        ['copy:img', 'sass', 'include'],
+        ['copy:img', 'sass', 'include', 'copy:libJS'],
         'watch:withoutJS',
         cb
     );
@@ -58,7 +58,7 @@ gulp.task('dev', function(cb) {
 gulp.task('watch', function(cb) {
     runSequence(
         ['clean:dist', 'clean:tmp'],
-        ['copy:img', 'sass', 'include', 'webpack:dev'],
+        ['copy:img', 'sass', 'include', 'webpack:dev', 'copy:libJS'],
         'watch:withJS',
         cb
     );
@@ -68,7 +68,7 @@ gulp.task('watch', function(cb) {
 gulp.task('serve', function(cb) {
     runSequence(
         ['clean:dist', 'clean:tmp'],
-        ['copy:img', 'sass', 'include'],
+        ['copy:img', 'sass', 'include', 'copy:libJS'],
         'reload:withoutJS',
         cb
     );
@@ -78,7 +78,7 @@ gulp.task('serve', function(cb) {
 gulp.task('browser', function(cb) {
     runSequence(
         ['clean:dist', 'clean:tmp'],
-        ['copy:img', 'sass', 'include', 'webpack:dev'],
+        ['copy:img', 'sass', 'include', 'webpack:dev', 'copy:libJS'],
         'reload:withJS',
         cb
     );
