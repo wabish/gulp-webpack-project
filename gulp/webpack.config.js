@@ -29,7 +29,7 @@ function addVendor() {
 
 module.exports = {
     cache: true,
-    devtool: "source-map",
+    devtool: "inline-source-map",
     entry: addVendor(),
     output: {
         path: path.join(DIST_PATH, 'js'),

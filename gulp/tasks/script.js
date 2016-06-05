@@ -17,11 +17,21 @@ module.exports = function (gulp, plugins, config) {
         })
     });
 
+    // 使用了 gulp-webpack 插件，暂时没使用改任务
+    // 如果 webpack:dev 编译时间过程可以尝试这个任务
+    gulp.task('webpack:demo', function(argument) {
+        return gulp.src(config.src + 'js/*.js')
+            .pipe(plugins.newer(config.dist + 'js'))
+            .pipe(plugins.webpack(webpackConfig))
+            .pipe(gulp.dest(config.dist + 'js'));
+    })
+
     // webpack执行命令
     gulp.task('webpack', plugins.shell.task([
         'webpack --watch --process --colors --config gulp/webpack.config.js'
     ]));
 
+    // webpack打包
     gulp.task('webpack:build', plugins.shell.task([
         'webpack --process --colors --config gulp/webpack.production.config.js'
     ]));
