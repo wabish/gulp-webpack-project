@@ -2,7 +2,7 @@
 
 ## 本示例模板
 
-这是一份帮助你学习 gulp + webpack 的项目示例代码。仅仅是一份参考，请根据自己的项目对其进行修改。
+这是一份帮助你学习 gulp + webpack 的项目示例代码。仅仅是一份参考，请根据自己的项目对其进行修改。详情请戳[「基于 gulp + webpack 的前端构建」](https://github.com/cobish/gulp-webpack-project/issues/1)。
 
 ## 学习的前提
 
