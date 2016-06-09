@@ -31,7 +31,7 @@ module.exports = {
     entry: addVendor(),
     output: {
         path: path.join(TMP_PATH, 'js'),
-        filename: "[name].js"
+        filename: '[name].js'
     },
     resolve: {
         alias: {

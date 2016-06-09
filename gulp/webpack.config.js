@@ -29,12 +29,12 @@ function addVendor() {
 
 module.exports = {
     cache: true,
-    devtool: "inline-source-map",
+    devtool: 'inline-source-map',
     entry: addVendor(),
     output: {
         path: path.join(DIST_PATH, 'js'),
-        publicPath: "dist/js/",
-        filename: "[name].js"
+        publicPath: 'dist/js/',
+        filename: '[name].js'
     },
     module: {
         preLoaders: [{
