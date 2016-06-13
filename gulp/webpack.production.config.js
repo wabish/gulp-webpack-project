@@ -1,6 +1,7 @@
 var path = require('path');
 var fs = require('fs');
 var webpack = require('webpack');
+var config = require('./gulp.config')();
 
 var ROOT_PATH = path.resolve(process.cwd());
 var SRC_PATH = path.resolve(ROOT_PATH, 'src');
@@ -34,17 +35,15 @@ module.exports = {
         filename: '[name].js'
     },
     resolve: {
-        alias: {
-            jquery: SRC_PATH + '/js/lib/jquery-1.11.1.min.js'
-        }
+        alias: config.alias
     },
-    externals: {
-        threePlugin: 'window.plugin',
-        artTemplate: 'window.template'
-    },
+    externals: config.externals,
     plugins: [
         new webpack.optimize.UglifyJsPlugin({
             minimize: true,
+            output: {
+                comments: false,
+            },
             compress: {
                 warnings: false
             }
